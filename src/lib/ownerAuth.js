@@ -42,7 +42,9 @@ export async function sendOwnerOtp(email) {
   if (normalized !== OWNER_EMAIL) throw new Error('This admin is restricted to the authorized owner email only.');
   await request('/otp', {
     method: 'POST',
-    body: JSON.stringify({ email: normalized, create_user: false, gotrue_meta_security: {} }),
+    // The owner is provisioned in Supabase ahead of time. Keeping user creation
+    // disabled prevents any public visitor from registering through this flow.
+    body: JSON.stringify({ email: normalized, create_user: false }),
   });
 }
 
