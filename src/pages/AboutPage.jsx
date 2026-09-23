@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, MessageCircle, MapPin, Store, Check, Layers } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 import { useEnquiry } from '../context/EnquiryContext';
+import { useCms } from '../context/CmsContext';
 
 export default function AboutPage() {
   const { openEnquiry } = useEnquiry();
+  const { resolveImage } = useCms();
 
   return (
     <div className="bg-white py-14 sm:py-20">
@@ -30,7 +32,7 @@ export default function AboutPage() {
           <div className="md:col-span-6">
             <div className="rounded-xl overflow-hidden border border-brand-border bg-brand-surface shadow-elevated">
               <img
-                src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1000&auto=format&fit=crop"
+                src={resolveImage('about-story')}
                 alt="EasyBudgetStore Delhi Wholesale"
                 className="w-full h-auto aspect-[4/5] object-cover object-center"
               />

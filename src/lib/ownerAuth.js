@@ -33,6 +33,10 @@ export function getStoredOwnerSession() {
   }
 }
 
+export function getOwnerAccessToken() {
+  return getStoredOwnerSession()?.access_token || '';
+}
+
 export function hasStoredOwnerSession() {
   return Boolean(getStoredOwnerSession()?.access_token);
 }

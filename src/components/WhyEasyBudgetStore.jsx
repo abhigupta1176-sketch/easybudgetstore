@@ -6,7 +6,7 @@ import { SafeImage } from './SafeImage';
 
 export default function WhyEasyBudgetStore() {
   const { openEnquiry } = useEnquiry();
-  const { homepage } = useCms();
+  const { homepage, resolveImage } = useCms();
   const why = homepage?.whyChooseUs || {};
   const points = (why.items || []).map((item) => ({
     num: item.icon,
@@ -22,7 +22,7 @@ export default function WhyEasyBudgetStore() {
           <div className="lg:col-span-6 relative">
             <div className="relative rounded-lg overflow-hidden border border-brand-border bg-brand-surface shadow-elevated">
               <SafeImage
-                src={why.image}
+                src={resolveImage('home-why', why.image)}
                 alt="EasyBudgetStore winterwear"
                 className="w-full h-auto aspect-[4/5] object-cover object-center"
               />

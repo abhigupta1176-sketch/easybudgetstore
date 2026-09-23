@@ -18,7 +18,7 @@ import { SkeletonGrid } from '../components/EmptyState';
 
 export default function HomePage() {
   const { openEnquiry } = useEnquiry();
-  const { site, homepage, store } = useCms();
+  const { site, homepage, store, resolveImage } = useCms();
   const hero = homepage?.hero || {};
   const featured = homepage?.featuredSection || {};
   const banner = (homepage?.banners || []).find((b) => b.enabled);
@@ -84,7 +84,7 @@ export default function HomePage() {
               <div className="lg:col-span-5">
                 <div className="relative rounded-xl overflow-hidden border border-brand-border bg-brand-surface shadow-elevated group">
                   <SafeImage
-                    src={hero.image}
+                    src={resolveImage('home-hero', hero.image)}
                     alt={hero.imageCaption || site.brandName}
                     className="w-full h-auto aspect-[4/5] object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />

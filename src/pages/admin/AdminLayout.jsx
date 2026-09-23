@@ -47,6 +47,7 @@ export default function AdminLayout() {
       label: 'Content',
       items: [
         { name: 'Media', path: '/admin/media', icon: Image },
+        { name: 'Website Images', path: '/admin/site-images', icon: Image },
         { name: 'Homepage', path: '/admin/homepage', icon: Layout },
         { name: 'Settings', path: '/admin/settings', icon: Settings },
       ]
