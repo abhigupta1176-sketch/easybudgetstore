@@ -2,8 +2,10 @@ import React from 'react';
 import { Instagram, ArrowUpRight } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
 import { instagramTiles } from '../data/products';
+import { useCms } from '../context/CmsContext';
 
 export default function InstagramSection() {
+  const { resolveImage } = useCms();
   return (
     <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,7 +33,7 @@ export default function InstagramSection() {
               aria-label={tile.caption}
             >
               <img
-                src={tile.image}
+                src={resolveImage(`instagram-${tile.id.split('-')[1]}`, tile.image)}
                 alt="EasyBudgetStore Latest Drop"
                 loading="lazy"
                 className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-102"

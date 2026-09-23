@@ -5,11 +5,13 @@ import {
   getWhatsAppLink,
   DEFAULT_SETTINGS,
 } from '../lib/cms';
+import { IMAGE_SLOT_MAP } from '../config/imageSlots';
 
 const CmsContext = createContext(null);
 
 export function CmsProvider({ children }) {
   const [store, setStore] = useState(() => getStore());
+  const [imageOverrides, setImageOverrides] = useState({});
 
   useEffect(() => {
     const unsub = subscribeCms(setStore);
@@ -22,6 +24,15 @@ export function CmsProvider({ children }) {
       window.removeEventListener('storage', refresh);
     };
   }, []);
+
+  useEffect(() => {
+    fetch('/api/site-images')
+      .then((response) => response.ok ? response.json() : { images: {} })
+      .then((data) => setImageOverrides(data.images || {}))
+      .catch(() => setImageOverrides({}));
+  }, []);
+
+  const resolveImage = (slot, fallback = '') => imageOverrides[slot] || fallback || IMAGE_SLOT_MAP[slot]?.fallback || '';
 
   const site = useMemo(() => {
     const s = { ...DEFAULT_SETTINGS, ...(store.settings || {}) };
@@ -54,6 +65,8 @@ export function CmsProvider({ children }) {
     allCategories: store.categories || [],
     products: store.products || [],
     refresh: () => setStore(getStore()),
+    imageOverrides,
+    resolveImage,
   };
 
   return <CmsContext.Provider value={value}>{children}</CmsContext.Provider>;

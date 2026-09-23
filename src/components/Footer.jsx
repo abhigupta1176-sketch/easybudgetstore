@@ -5,7 +5,7 @@ import { useCms } from '../context/CmsContext';
 import { SafeImage } from './SafeImage';
 
 export default function Footer() {
-  const { site, categories } = useCms();
+  const { site, categories, resolveImage } = useCms();
   const year = new Date().getFullYear();
 
   return (
@@ -14,7 +14,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-brand-border">
           <div className="lg:col-span-4">
             <Link to="/" className="inline-block mb-4">
-              <SafeImage src={site.logoUrl || '/logo.png'} alt={site.brandName} className="h-16 w-auto max-w-[240px] object-contain object-left" />
+              <SafeImage src={resolveImage('site-logo', site.logoUrl || '/logo.png')} alt={site.brandName} className="h-16 w-auto max-w-[240px] object-contain object-left" />
             </Link>
             <p className="text-xs font-semibold text-brand-text uppercase tracking-wider">{site.tagline}</p>
             <p className="mt-3 text-sm text-brand-muted leading-relaxed max-w-sm">{site.footerText}</p>

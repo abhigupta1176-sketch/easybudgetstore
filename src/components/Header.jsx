@@ -10,7 +10,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [catsOpen, setCatsOpen] = useState(false);
   const { openSearch, openEnquiry } = useEnquiry();
-  const { site, categories } = useCms();
+  const { site, categories, resolveImage } = useCms();
   const location = useLocation();
   const drawerRef = useRef(null);
 
@@ -87,7 +87,7 @@ export default function Header() {
             aria-label={`${site.brandName || 'EasyBudgetStore'} — Home`}
           >
             <SafeImage
-              src={site.logoUrl || '/logo.png'}
+              src={resolveImage('site-logo', site.logoUrl || '/logo.png')}
               alt={site.brandName || 'EasyBudgetStore'}
               style={{ height: 'var(--header-logo-h)' }}
               className="w-auto object-contain object-left transition-all duration-300"
@@ -230,7 +230,7 @@ export default function Header() {
           <div ref={drawerRef} className="absolute right-0 inset-y-0 w-[min(100%,340px)] sm:w-[400px] bg-white shadow-2xl flex flex-col overflow-y-auto">
 
             <div className="flex items-center justify-between px-6 py-5 border-b border-brand-border shrink-0">
-              <SafeImage src={site.logoUrl || '/logo.png'} alt="" style={{ height: `${Math.min(logoHMobile, 56)}px` }} className="w-auto object-contain" />
+              <SafeImage src={resolveImage('site-logo', site.logoUrl || '/logo.png')} alt="" style={{ height: `${Math.min(logoHMobile, 56)}px` }} className="w-auto object-contain" />
               <button onClick={() => setMobileMenuOpen(false)} aria-label="Close" className="p-2.5 bg-brand-surface rounded-full text-brand-dark hover:bg-neutral-200 transition-colors">
                 <X className="w-5 h-5" />
               </button>

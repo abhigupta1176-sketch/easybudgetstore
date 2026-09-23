@@ -34,6 +34,7 @@ import AdminInventoryPage from './pages/admin/AdminInventoryPage';
 import AdminCustomersPage from './pages/admin/AdminCustomersPage';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import AdminMediaPage from './pages/admin/AdminMediaPage';
+import AdminSiteImagesPage from './pages/admin/AdminSiteImagesPage';
 
 function ProtectedAdminRoute({ children }) {
   const { user, isAdmin, loading } = useAuth();
@@ -95,6 +96,7 @@ export default function App() {
                 <Route path="inventory" element={<AdminInventoryPage />} />
                 <Route path="customers" element={<AdminCustomersPage />} />
                 <Route path="media" element={<AdminMediaPage />} />
+                <Route path="site-images" element={<AdminSiteImagesPage />} />
                 <Route path="settings" element={<AdminSettingsPage />} />
               </Route>
 
