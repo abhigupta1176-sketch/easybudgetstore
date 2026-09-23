@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
           <div className="mb-6">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-neutral-100 border border-neutral-200 rounded-full text-[10px] font-extrabold uppercase tracking-widest text-neutral-700 mb-3"><KeyRound className="w-3 h-3 text-brand-dark" />Restricted owner access</div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-brand-text uppercase tracking-wider font-editorial">{codeSent ? 'Enter your code' : 'Sign in to Admin'}</h2>
-            <p className="text-xs text-brand-muted mt-2 leading-relaxed">{codeSent ? `A 6-digit verification code was sent to ${OWNER_EMAIL}.` : 'We will send a one-time verification code to the authorised owner email.'}</p>
+            <p className="text-xs text-brand-muted mt-2 leading-relaxed">{codeSent ? `A verification code was sent to ${OWNER_EMAIL}.` : 'We will send a one-time verification code to the authorised owner email.'}</p>
           </div>
           {error && <div className="mb-5 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs font-semibold flex items-center gap-3"><AlertCircle className="w-5 h-5 shrink-0" />{error}</div>}
 
@@ -81,8 +81,8 @@ export default function AdminLoginPage() {
             </form>
           ) : (
             <form onSubmit={confirmCode} className="space-y-5">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-brand-text">6-digit email code
-                <input inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} required className="mt-1.5 w-full bg-white border border-brand-border rounded-lg px-4 py-3 text-center tracking-[0.55em] text-lg font-bold text-brand-text focus:outline-none focus:ring-1 focus:ring-brand-dark" placeholder="000000" />
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-brand-text">Email verification code
+                <input inputMode="numeric" autoComplete="one-time-code" maxLength={8} value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} required className="mt-1.5 w-full bg-white border border-brand-border rounded-lg px-4 py-3 text-center tracking-[0.4em] text-lg font-bold text-brand-text focus:outline-none focus:ring-1 focus:ring-brand-dark" placeholder="00000000" />
               </label>
               <button type="submit" disabled={submitting} className="w-full py-4 bg-brand-dark hover:bg-black text-white font-bold text-xs uppercase tracking-widest rounded-lg transition-all disabled:opacity-50">{submitting ? 'Verifying…' : 'Verify & open admin →'}</button>
               <button type="button" onClick={() => { setCodeSent(false); setCode(''); setError(''); }} className="w-full text-[11px] font-bold uppercase tracking-wider text-brand-muted hover:text-brand-text">Use a different email</button>

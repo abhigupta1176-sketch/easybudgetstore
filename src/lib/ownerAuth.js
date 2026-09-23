@@ -52,7 +52,9 @@ export async function verifyOwnerOtp(email, token) {
   const normalized = String(email || '').trim().toLowerCase();
   if (normalized !== OWNER_EMAIL) throw new Error('This admin is restricted to the authorized owner email only.');
   const code = String(token || '').replace(/\s/g, '');
-  if (!/^\d{6}$/.test(code)) throw new Error('Enter the 6-digit code sent to your email.');
+  // Supabase email templates can be configured for either a 6- or 8-digit
+  // numeric token. Accept both while still rejecting arbitrary input.
+  if (!/^\d{6,8}$/.test(code)) throw new Error('Enter the verification code sent to your email.');
   const payload = await request('/verify', {
     method: 'POST',
     body: JSON.stringify({ email: normalized, token: code, type: 'email' }),
