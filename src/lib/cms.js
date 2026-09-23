@@ -3,6 +3,7 @@
  * Works on static Netlify hosting via localStorage, and hydrates from seed data once.
  */
 import { products as seedProducts } from '../data/products';
+import { loadSharedStore, saveSharedStore } from './remoteCms';
 
 export const STORE_KEY = 'ebs_cms_v5';
 const LISTENERS = new Set();
@@ -287,6 +288,14 @@ function writeRaw(store) {
   window.dispatchEvent(new CustomEvent('ebs-cms-updated'));
 }
 
+function syncSharedStore(store) {
+  // Storefront visitors only read. Admin writes use the verified Supabase
+  // session and are intentionally best-effort here so local UI stays fast.
+  saveSharedStore(store).catch((error) => {
+    console.warn('Shared CMS sync pending:', error.message);
+  });
+}
+
 export function subscribeCms(fn) {
   LISTENERS.add(fn);
   return () => LISTENERS.delete(fn);
@@ -339,6 +348,7 @@ export function saveStore(mutator) {
   const current = getStore();
   const next = typeof mutator === 'function' ? mutator(current) : { ...current, ...mutator };
   writeRaw(next);
+  syncSharedStore(next);
   return next;
 }
 
@@ -350,7 +360,19 @@ export function logAudit(action, details) {
 }
 
 export async function initCms() {
-  return getStore();
+  const localStore = getStore();
+  try {
+    const remoteStore = await loadSharedStore();
+    if (remoteStore?.version === 5) {
+      writeRaw(remoteStore);
+      return getStore();
+    }
+  } catch (error) {
+    // A new project has no row until the owner makes the first save. Existing
+    // local data remains usable while the storefront is offline.
+    console.warn('Shared CMS unavailable:', error.message);
+  }
+  return localStore;
 }
 
 export function withPrice(product) {
