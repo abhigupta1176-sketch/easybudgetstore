@@ -68,11 +68,18 @@ export async function verifyOwnerOtp(email, token) {
     expires_in: payload.expires_in,
     expires_at: payload.expires_at,
   } : null);
-  if (!session?.access_token || payload.user?.email?.toLowerCase() !== OWNER_EMAIL) {
+  if (!session?.access_token) {
     throw new Error('Owner verification failed. Please request a new code.');
   }
+  // Confirm the identity with Supabase instead of relying on a response-shape
+  // detail from the OTP endpoint. This is the authorization check that keeps
+  // every other email out of the admin.
+  const verifiedUser = await request('/user', { method: 'GET' }, session.access_token);
+  if (verifiedUser?.email?.toLowerCase() !== OWNER_EMAIL) {
+    throw new Error('This admin is restricted to the authorized owner email only.');
+  }
   localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-  return { id: payload.user.id, email: OWNER_EMAIL, role: 'SUPER_ADMIN' };
+  return { id: verifiedUser.id, email: OWNER_EMAIL, role: 'SUPER_ADMIN' };
 }
 
 export async function getVerifiedOwner() {
