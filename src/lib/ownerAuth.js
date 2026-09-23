@@ -1,9 +1,9 @@
 // Supabase handles identity. The publishable key below is intentionally safe for a browser;
 // it can only access resources allowed by the project's server-side policies.
-const SUPABASE_URL = 'https://xsazdfzhbukyrrszluzr.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_G8Ekc8sDmEXPDJwAzzL1vg_rNv-wAfg';
+const SUPABASE_URL = 'https://tosdqjdvjdgntsrfqgot.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_9UzPFCT3BImOfltGmLZt2A_nQovxSBV';
 
-export const OWNER_EMAIL = 'abhi1172006@gmail.com';
+export const OWNER_EMAIL = 'abhigupta1176@gmail.com';
 const SESSION_KEY = 'ebs_owner_session_v1';
 
 function headers(accessToken) {
