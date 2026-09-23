@@ -59,10 +59,19 @@ export async function verifyOwnerOtp(email, token) {
     method: 'POST',
     body: JSON.stringify({ email: normalized, token: code, type: 'email' }),
   });
-  if (!payload.session?.access_token || payload.user?.email?.toLowerCase() !== OWNER_EMAIL) {
+  // The REST endpoint returns the session fields at the top level, while SDKs
+  // wrap them inside `data.session`. Support both formats.
+  const session = payload.session || (payload.access_token ? {
+    access_token: payload.access_token,
+    refresh_token: payload.refresh_token,
+    token_type: payload.token_type,
+    expires_in: payload.expires_in,
+    expires_at: payload.expires_at,
+  } : null);
+  if (!session?.access_token || payload.user?.email?.toLowerCase() !== OWNER_EMAIL) {
     throw new Error('Owner verification failed. Please request a new code.');
   }
-  localStorage.setItem(SESSION_KEY, JSON.stringify(payload.session));
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
   return { id: payload.user.id, email: OWNER_EMAIL, role: 'SUPER_ADMIN' };
 }
 
